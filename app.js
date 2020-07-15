@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 const ads = require('./routes/ads');
-const users = require('./routes/users');
 const User = require('./models/user.model');
 
 const express = require('express');
@@ -22,12 +21,10 @@ app.use(async (req, res, next) => {
 });
 
 app.use('/ads', ads);
-app.use('/users', users);
 
 app.use((err, req, res) => {
-  if(err) {
-    res.status(500).send('Wystąpił błąd');
-  }
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
 })
 
 app.listen(4500, () => console.log('server started!'));
